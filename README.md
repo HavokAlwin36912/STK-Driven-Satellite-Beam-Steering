@@ -30,4 +30,28 @@ This function file computes the steering vector using the angle recieved from An
 [Information about MUSIC used for DOA estimation (future works)](https://forums.ni.com/t5/LabVIEW/Steering-Vector-of-the-Vector-Antenna-in-LabView/td-p/4220010) <br>
 [Inspiration to improve the steering vector (future works)](https://www.sharetechnote.com/html/TechSlide/html/antennaRadiation_Steering_exp_var_p_01.html) <br>
 
-### ***Problems yet to solve :***
+## ***Problems yet to solve :***
+
+#### *1. Angle Definition and Beam Steering Constraint*
+
+*The azimuth and elevation angles obtained from* ***ANSYS STK*** *represent the satellite trajectory around the Earth, not the required beam scanning region. For beam steering, angles must be defined over a scan region rather than orbital positions. Additionally, the* ***phased array antenna*** *on the satellite must remain stationary to enable controlled beam steering across the defined angular space.*
+
+#### *2. Steering Vector and Beamforming Limitation*
+
+*Implementation of the* ***steering vector*** *and* ***MVDR beamforming*** *is required. The current approach uses* ***DAS (Delay-And-Sum)***, *where weights are applied as simple phase shifts. This method is not efficient for sidelobe suppression and limits overall beamforming performance.*
+
+#### *3. MVDR Implementation with SDR Input*
+
+*The* ***MVDR algorithm*** *must be implemented in MATLAB, with input signal* ***X*** *acquired from the* ***BladeRF Micro 2.0 xA4*** *software-defined radio. This enables real-time signal-based beamforming instead of relying on simulated data.*
+
+#### *4. Beamforming Methodology Constraint*
+
+*Two approaches are considered:*
+
+* ***Phased Array Beamforming***: *Multiple antenna elements connected to a single transmitter, limiting independent control and making dynamic beam steering difficult.*
+* ***Digital Beamforming (MIMO)***: *Multiple transmit channels (TX1, TX2) from BladeRF introduce controlled delays, forming a MIMO system that enables spatial focusing and dynamic beam steering.*
+
+#### *5. Array Geometry Mismatch*
+
+*The theoretical model is based on a* ***Uniform Rectangular Array (URA)***, *while practical implementation using BladeRF aligns more closely with a* ***Uniform Linear Array (ULA)***. *This creates challenges in translating theoretical models into real-world deployment.*
+
